@@ -28,10 +28,10 @@
 using namespace std;
 
 Voice::Voice(const unsigned int& id):m_id(id), 
-								m_minGrainSize(512), m_maxGrainSize(8000), 
+								m_minGrainSize(4096), m_maxGrainSize(8000), 
 								m_minScattering(500), m_maxScattering(15000),
 								m_stop(false), m_done(false), 
-								m_grainSize(1024), 
+								m_grainSize(4096), 
 								m_volume(1), m_density(1), 
 								m_densityCounter(0),
 								m_scattering(2000), m_width(1), 
