@@ -1,33 +1,51 @@
 class GranularSynth implements AudioSignal {
 
-  GranularSynth(Minim minim) {
-    Minim m_minim=minim; 
-    
-  }
-  
-  AudioPlayer m_player;
-  
-  float m_volume;
-  float m_pitch;
-  float m_granularity;
-  float m_width;
-  
-  float m_grainSize;  
-  float m_grainDensity;
+  Map<Integer,GranularVoice> m_voices = new Hashtable<Integer,GranularVoice>();
+  ArrayList<AudioSample> m_samples = new ArrayList<AudioSample>(50);
 
-  void loadSoundFiles(String dir) {
-    
-    m_player = minim.loadFile("test.wav", 2048); 
-    
+  void init(Minim minim, String dir) {
+   if(minim!=null) {
+     m_samples.add(minim.loadSample("mel_0.wav", 2048)); 
+   }
   }
 
-  void generate(float[] leftBuf) {
-   
+
+  void createVoice(int id, List args) {
+    m_voices.put(id, new GranularVoice());
+    ((GranularVoice)m_voices.get(id)).init(); 
+    updateVoice(id, args);
+  }
+
+  void deleteVoice(int id, List args) {
+    updateVoice(id, args);
+    ((GranularVoice)m_voices.get(id)).stop();
+  }
+
+  void updateVoice(int id, List args) {
+    GranularVoice voice = (GranularVoice)(m_voices.get(id));
+    voice.setVolume((Float)(args.get(0))); 
+    voice.setPitch((Float)(args.get(1))); 
+    voice.setPitchScale((Float)(args.get(2)));
+    voice.setResonance((Float)(args.get(3)));
+    voice.setBrightness((Float)(args.get(4)));
+    voice.setNoisiness((Float)(args.get(5)));
+    voice.setGranularity((Float)(args.get(6)));
+    //voice.setWidth((Float)(args.get(7)));
   }
 
   void generate(float[] leftBuf, float[] rightBuf) {
-    //for ( int f = 0; f < leftBuf.length; f ++ )
-    
+    for(Iterator itVoice=m_voices.values().iterator();itVoice.hasNext();) {
+      GranularVoice voice = (GranularVoice)(itVoice.next());
+      voice.generate(leftBuf, rightBuf);
+      if(voice.isOver()) {
+         println("voice is over");
+         itVoice.remove(); 
+      }
+    }
   }
+  
+  void generate(float[] leftBuf) {
+    generate(leftBuf, leftBuf);
+  }
+  
 }
-
