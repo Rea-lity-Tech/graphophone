@@ -12,7 +12,7 @@ class GranularSynth implements AudioSignal {
 
   void createVoice(int id, List args) {
     m_voices.put(id, new GranularVoice());
-    ((GranularVoice)m_voices.get(id)).init(); 
+    ((GranularVoice)m_voices.get(id)).init(m_samples); 
     updateVoice(id, args);
   }
 
@@ -27,9 +27,9 @@ class GranularSynth implements AudioSignal {
     voice.setPitch((Float)(args.get(1))); 
     voice.setPitchScale((Float)(args.get(2)));
     voice.setResonance((Float)(args.get(3)));
-    voice.setBrightness((Float)(args.get(4)));
-    voice.setNoisiness((Float)(args.get(5)));
-    voice.setGranularity((Float)(args.get(6)));
+    voice.setWidth((Float)(args.get(4)));
+    voice.setGranularity((Float)(args.get(5)));
+    //voice.setNoisiness((Float)(args.get(5)));
     //voice.setWidth((Float)(args.get(7)));
   }
 
