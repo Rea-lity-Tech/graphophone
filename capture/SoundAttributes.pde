@@ -22,16 +22,16 @@ class SoundAttributes{
 
     public void mapFrom(ImageAttributes imgAtt, PositionAttributes posAtt){
 	
-	// amplitude = imgAtt.gradient.mag();
+	amplitude = imgAtt.gradient.mag();
 	
-	int r = imgAtt.meanColor >> 16 & 0xFF;
+	// int r = imgAtt.colour >> 16 & 0xFF;
 
-	noteInterval = 100 + (r / 255f) * 800;
+	// noteInterval = 100 + (r / 255f) * 800;
 
-	if(millis() - lastNotePlayed > noteInterval){
-	    PlayNote(40, (int) noteSpeed, 80, 30, channel);
-	    lastNotePlayed = millis();
-	}
+	// if(millis() - lastNotePlayed > noteInterval){
+	//     PlayNote(40, (int) noteSpeed, 80, 30, channel);
+	//     lastNotePlayed = millis();
+	// }
 
     }
   

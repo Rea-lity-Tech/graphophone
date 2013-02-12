@@ -3,15 +3,15 @@
 //////////////////////
 
 class ImageAttributes{
-    float gradient;
+    PVector gradient;
     int colour;
     
     ImageAttributes(){
 	this.colour = 0;
-	this.gradient = 0.0;
+	this.gradient = new PVector();
     }
 
-    private float gaussianDerivative(PVector pos, PVector dir, float size){
+    private PVector gaussianDerivative(PVector pos, float size){
         int kernelSize = (int)size;
 	float sigma = size/3.0;
 	float dem = 2.0*sigma*sigma;
@@ -25,18 +25,20 @@ class ImageAttributes{
 	    float wx1 = exp(-float(xi-kernelSize)*float(xi-kernelSize)/dem);
 	    float wx2 = -float(xi-kernelSize)*wx1*2.0/dem;
 
-            int offset = ((int)pos.y+yi-kernelSize) * width + ((int)pos.x+xi-kernelSize);
+            int offset = ((int)pos.y+yi-kernelSize) * currentDrawing.width + ((int)pos.x+xi-kernelSize);
             color c = color(255,255,255);
             if (offset >= 0 && offset < currentDrawing.width*currentDrawing.height){
               c = currentDrawing.pixels[offset];
-            }
+            }else{
+		c = color(255,255,255);
+	    }
+	    
             float val = (red(c) + green(c) + blue(c))/(3.0*255.0);
             sumX += val * wy1 * wx2;
             sumY += val * wy2 * wx1;
 	  }
 	}
-        PVector grad = new PVector (sumX, sumY);
-        return dir.dot(grad);
+	return new PVector (sumX, sumY);
     }
 
     private int meanColor(PVector pos, float size){
@@ -53,7 +55,7 @@ class ImageAttributes{
 
 	for(int y = startY; y < endY; y++){
 	    for(int x = startX; x < endX; x++){
-		int offset = y * width + x;
+		int offset = y * currentDrawing.width + x;
 		int argb = currentDrawing.pixels[offset];
 		
 		r += (argb >> 16) & 0xFF; 
@@ -72,13 +74,11 @@ class ImageAttributes{
     public void computeAt(PositionAttributes pa){
 
 	PVector pos = pa.pos;
-	PVector dir = pa.speed;
-        dir.normalize();
 	float size = pa.size;
 
-        this.gradient = gaussianDerivative(pos, dir, size);
+        this.gradient = gaussianDerivative(pos,size);
         this.colour = meanColor(pos, size);        
-        println(this.gradient);
+
     }
 
 

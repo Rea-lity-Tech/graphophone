@@ -22,8 +22,8 @@ boolean StartSynth(){
 	    synthesizer.open();
 
 	    Instrument[] instruments = synthesizer.getAvailableInstruments();
-	    for(int i =0; i < instruments.length; i++)
-		println(i + ": " + instruments[i]);
+	    // for(int i =0; i < instruments.length; i++)
+	    // 	println(i + ": " + instruments[i]);
 
 	    //	    synthesizer.loadInstrument(instruments[38]);
 	    channels = synthesizer.getChannels();
