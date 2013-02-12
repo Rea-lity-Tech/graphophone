@@ -4,7 +4,7 @@
 
 int cursorID = 0;
 
-class Cursor {
+class Cursor extends Thread{
 
     NetAddress remoteLocation;
     OscP5 oscP5;
@@ -14,6 +14,8 @@ class Cursor {
     ImageAttributes imgAtt;
     PositionAttributes posAtt;
     SoundAttributes sndAtt;
+
+    // TODO: make it in a thread 
 
     Cursor(OscP5 osc, NetAddress remoteLocation, 
 	   PVector pos, PVector speed, float size){
@@ -46,6 +48,14 @@ class Cursor {
 	OscMessage myMessage = new OscMessage(type);
 	myMessage.add(id);
 	myMessage.add(sndAtt.amplitude);
+	myMessage.add(sndAtt.amplitude);
+	myMessage.add(sndAtt.amplitude);
+
+	myMessage.add(sndAtt.amplitude);
+	myMessage.add(sndAtt.amplitude);
+	myMessage.add(sndAtt.amplitude);
+
+	myMessage.add(sndAtt.amplitude);
 
 	oscP5.send(myMessage, myRemoteLocation); 
     }
@@ -68,8 +78,8 @@ class Cursor {
 	    posAtt.speed.x = -posAtt.speed.x;
 	} 
 
-	if(posAtt.pos.x >=  width){
-	    posAtt.pos.x = width -1;
+	if(posAtt.pos.x >=  currentDrawing.width){
+	    posAtt.pos.x = currentDrawing.width -1;
 	    posAtt.speed.x = -posAtt.speed.x;
 	} 
 
@@ -78,10 +88,28 @@ class Cursor {
 	    posAtt.speed.y = -posAtt.speed.y;
 	} 
 		
-	if(posAtt.pos.y >=  height){
-	    posAtt.pos.y = height -1;
+	if(posAtt.pos.y >=  currentDrawing.height){
+	    posAtt.pos.y = currentDrawing.height -1;
 	    posAtt.speed.y = -posAtt.speed.y;
 	}
+    }
+
+    public boolean isActive(){
+	return this.isActive;
+    }
+
+    public void run(){
+
+	while(isActive){
+	    update();
+
+	    if(!weirdMode){
+		try{
+		    Thread.sleep(30);
+		}catch(Exception e){}
+	    }
+	}
+
     }
 
     public boolean update(){
@@ -95,10 +123,10 @@ class Cursor {
 	// 3 - Update image and sound attribs w/ new cursor
 	imgAtt.computeAt(posAtt);
 
-	sndAtt.mapFrom(imgAtt, posAtt);	
+	// sndAtt.mapFrom(imgAtt, posAtt);	
 		
 	// 4- Decide to continue or terminate 
-	if(posAtt.speed.mag() < 0.05){
+	if(posAtt.speed.mag() < 0.10){
 	    sendDelete();
 	    this.isActive = false;
 	    return false;
@@ -109,19 +137,53 @@ class Cursor {
     }
 
 
+
+    PVector xDir = new PVector(1,0);
+
     public void drawSelf(PGraphics g){
 
-	pushStyle();
-	fill(255);
-	stroke(0);
+	if(!this.isActive)
+	    return;
+
+
+	if(weirdMode){
+	    //	    g.fill(255, 80);
+	    //	    g.stroke(120, 2);
+
+	    PVector v2 = new PVector(60, 80); 
+
+	    PVector dir = new PVector(posAtt.speed.x, posAtt.speed.y);
+	    dir.normalize();
+	    float angle = degrees(PVector.angleBetween(xDir, dir));
+
+	    noFill();
+	    colorMode(HSB, 360, 100, 100);
+	    stroke(color(angle, 100, 100), 30);
+	    
+	    ellipse(posAtt.pos.x, posAtt.pos.y, 4, 4);
+
+	    return;
+	}
+
+	g.pushStyle();
+
+	g.fill(255);
+	g.stroke(0);
 	g.ellipse(posAtt.pos.x, posAtt.pos.y, 8, 8);
 
-	fill(255, 0);
-	rectMode(CENTER);
-	rect(posAtt.pos.x, posAtt.pos.y, posAtt.size, posAtt.size);
-	//	g.ellipse(posAtt.pos.x, posAtt.pos.y, posAtt.size, posAtt.size);
+	//	rect(posAtt.pos.x, posAtt.pos.y, posAtt.size, posAtt.size);
 
-	popStyle();
+	g.noFill();
+	g.stroke(0, 128);
+
+	g.ellipse(posAtt.pos.x, posAtt.pos.y, posAtt.size, posAtt.size);
+	g.line(posAtt.pos.x, 
+	       posAtt.pos.y, 
+	       posAtt.pos.x + posAtt.speed.x * 5, 
+	       posAtt.pos.y + posAtt.speed.y * 5);
+
+
+	g.popStyle();
     }
 
 }
