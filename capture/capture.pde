@@ -1,6 +1,11 @@
 import oscP5.*;
 import netP5.*;
-  
+
+// GLGraphics and OpenGL 
+import javax.media.opengl.GL;
+import processing.opengl.*;
+import codeanticode.glgraphics.*;
+
 
 NetAddress myRemoteLocation;
 OscP5 oscP5;
@@ -10,21 +15,30 @@ PVector cursorSpeed;
 
 ArrayList<Cursor> myCursors;
 
-PImage currentDrawing,masque;
+PImage currentDrawing,masque,currentSobel;
+
 // TODO: 
 // ImageAnalysis analysis;
 
+
+//GLSLShader sobelShader;
+GLTexture myTexture, dest;
+GLTextureFilter sobelFilter;
+
 void setup(){
   
-  size(800, 600, P2D);
+  size(800, 600,  GLConstants.GLGRAPHICS);
     
   /* start oscP5, listening for incoming messages at port 12000 */
   // Not used for receiving. 
   oscP5 = new OscP5(this,12001);
 
-  myRemoteLocation = new NetAddress("193.50.111.113", 8000);  
+  myRemoteLocation = new NetAddress("localhost", 8000);  
   
+  myTexture = new GLTexture(this, "../dessin.png");
+  dest = new GLTexture(this, 800, 600);
   currentDrawing = loadImage("../dessin.png");
+  currentSobel = loadImage("../dessin.png");
   currentDrawing.loadPixels();
   // TODO: 
 	// currentDrawing.loadPixel();
@@ -34,6 +48,16 @@ void setup(){
 
   myCursors = new ArrayList<Cursor>();
 
+  sobelFilter = new GLTextureFilter(this, "sobel.xml");
+
+  float[] pixelSize = new float[2];
+  pixelSize[0] = 1f / width;
+  pixelSize[1] = 1f / height;
+  sobelFilter.setParameterValue("wh", pixelSize);
+  sobelFilter.apply(myTexture, dest);
+  dest.getImage(currentSobel);
+
+  //  sobelShader  = new GLSLShader(this, "sobel.vert", "sobel.frag");
   frameRate(80);
 }
 
@@ -44,8 +68,13 @@ void draw(){
   // black background 
   background(0);
 
-  image(currentDrawing, 0, 0, 800, 600);
 
+  //  myTexture.render();
+  // dest.render();
+  
+  image(currentSobel, 0, 0, 800, 600);
+  
+  //    image(currentDrawing, 0, 0, 800, 600);
 
   ArrayList<Cursor> toDelete = new ArrayList<Cursor>();
   
@@ -58,7 +87,6 @@ void draw(){
   for(Cursor c : toDelete){
     myCursors.remove(c);
   }
-
 
 
 }
