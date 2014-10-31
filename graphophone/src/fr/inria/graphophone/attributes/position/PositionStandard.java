@@ -43,8 +43,8 @@ public class PositionStandard extends PositionAttribute {
 
         PVector newSpeed = new PVector();
         
-        if (currentAttributes instanceof GaussianDerivative) {
-            PVector gradient = ((GaussianDerivative) currentAttributes).getGradient();
+        if (currentAttribute instanceof GaussianDerivative) {
+            PVector gradient = ((GaussianDerivative) currentAttribute).getGradient();
 
             PVector newSpeed1 = new PVector(-gradient.y, gradient.x);
             PVector newSpeed2 = new PVector(gradient.y, -gradient.x);
@@ -74,8 +74,8 @@ public class PositionStandard extends PositionAttribute {
     @Override
     protected void updateSize() {
 
-        if (currentAttributes instanceof MeanColor) {
-            float lum = brightness((int) ((MeanColor) currentAttributes).getMeanColor()) / 255f;
+        if (currentAttribute instanceof MeanColor) {
+            float lum = brightness((int) ((MeanColor) currentAttribute).getMeanColor()) / 255f;
             float newSize = PApplet.lerp(minSize, maxSize, PApplet.max(0, (lum - 0.5f) * 2));
             this.size = PApplet.lerp(this.size, newSize, (1f - sizeInertia));
         }

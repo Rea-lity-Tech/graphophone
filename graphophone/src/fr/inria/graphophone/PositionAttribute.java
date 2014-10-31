@@ -20,7 +20,7 @@ public abstract class PositionAttribute implements Attribute {
 
     static final float DEFAULT_SIZE = 10;
 
-    protected ImageAttribute currentAttributes;
+    protected ImageAttribute currentAttribute;
     private float[] values;
 
     public PositionAttribute(PVector pos) {
@@ -35,7 +35,7 @@ public abstract class PositionAttribute implements Attribute {
     }
 
     public void mapFrom(ImageAttribute imgAtt) {
-        currentAttributes = imgAtt;
+        currentAttribute = imgAtt;
         updatePosition();
         updateSpeed();
         updateSize();
