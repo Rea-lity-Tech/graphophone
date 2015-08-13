@@ -10,19 +10,14 @@ import fr.inria.graphophone.ImageAttribute;
 import fr.inria.graphophone.PositionAttribute;
 import fr.inria.graphophone.SoundAttribute;
 import fr.inria.graphophone.attributes.image.GaussianDerivative;
-import fr.inria.graphophone.attributes.image.MeanColor;
-import fr.inria.graphophone.attributes.image.RedMajority;
 import fr.inria.graphophone.attributes.position.PositionStandard;
 import fr.inria.graphophone.attributes.sound.NotePlayer;
-import netP5.NetAddress;
-import oscP5.OscMessage;
-import oscP5.OscP5;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
  *
- * @author Jeremy Laviole <jeremy.laviole@inria.fr>
+ * @author Jeremy Laviole - jeremy.laviole@inria.fr - 
  */
 public class BasicCursor extends Cursor {
 

@@ -17,9 +17,12 @@ PImage currentImage;
 
 ArrayList<Cursor> cursors = new ArrayList<Cursor>();
 
-void setup() {
+void settings(){
   currentImage = loadImage(fileName);
-  size(currentImage.width, currentImage.height, OPENGL);
+  size(currentImage.width, currentImage.height, P3D);
+}
+
+void setup() {
 }
 
 void draw() {

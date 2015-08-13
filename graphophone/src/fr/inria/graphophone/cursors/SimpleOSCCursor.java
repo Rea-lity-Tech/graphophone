@@ -5,7 +5,6 @@
  */
 package fr.inria.graphophone.cursors;
 
-import fr.inria.graphophone.Cursor;
 import fr.inria.graphophone.ImageAttribute;
 import fr.inria.graphophone.PositionAttribute;
 import fr.inria.graphophone.SoundAttribute;
@@ -14,7 +13,6 @@ import fr.inria.graphophone.attributes.image.MeanColor;
 import fr.inria.graphophone.attributes.image.RedMajority;
 import fr.inria.graphophone.attributes.position.PositionStandard;
 import fr.inria.graphophone.attributes.sound.NotePlayer;
-import java.util.List;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 import oscP5.OscP5;

@@ -5,14 +5,10 @@
  */
 package fr.inria.graphophone;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
-import netP5.NetAddress;
-import oscP5.OscP5;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import processing.core.PVector;
 
 /**
  *

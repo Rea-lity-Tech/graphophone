@@ -7,7 +7,6 @@ import java.util.Iterator;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-import processing.core.PVector;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 import oscP5.OscP5;
@@ -17,14 +16,17 @@ PImage currentImage;
 
 ArrayList<Cursor> cursors = new ArrayList<Cursor>();
 
+void settings(){
+    currentImage = loadImage(fileName);
+    size(currentImage.width, currentImage.height,  P3D);
+}
+
 void setup(){
     OscP5 oscP5 = new OscP5(this,12001);
     NetAddress myRemoteLocation = new NetAddress("127.0.0.1", 8327);  
 
-    currentImage = loadImage(fileName);
     SimpleOSCCursor.SetOSCParameters(myRemoteLocation, oscP5);
 
-    size(currentImage.width, currentImage.height,  OPENGL);
 }
 
 void draw(){

@@ -12,10 +12,16 @@ import netP5.NetAddress;
 import oscP5.OscMessage;
 import oscP5.OscP5;
 
+import toxi.geom.*;
+import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacpp.freenect;
+import org.bytedeco.javacpp.opencv_core.*;
+import java.nio.IntBuffer;
 
 // PapARt library
 import fr.inria.papart.procam.*;
 import fr.inria.papart.procam.display.*;
+import fr.inria.papart.procam.camera.*;
 
 Papart papart;
 MarkerBoard markerBoard;
