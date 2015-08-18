@@ -11,16 +11,16 @@ import processing.core.PVector;
 
 public abstract class PositionAttribute implements Attribute {
 
-    protected PVector pos;
-    protected PVector speed;
-    protected float size;
+    public PVector pos;
+    public PVector speed;
+    public float size;
 
-    protected float minSize = 5;
-    protected float maxSize = 100;
+    public float minSize = 5;
+    public float maxSize = 100;
 
     static final float DEFAULT_SIZE = 10;
 
-    protected ImageAttribute currentAttribute;
+    public ImageAttribute currentAttribute;
     private float[] values;
 
     public PositionAttribute(PVector pos) {
@@ -43,9 +43,9 @@ public abstract class PositionAttribute implements Attribute {
 
     abstract public void updatePosition();
 
-    abstract protected void updateSpeed();
+    abstract public void updateSpeed();
 
-    abstract protected void updateSize();
+    abstract public void updateSize();
 
     @Override
     public float[] getValues() {

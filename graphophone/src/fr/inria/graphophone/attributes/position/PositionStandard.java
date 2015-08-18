@@ -18,13 +18,13 @@ import processing.core.PVector;
  */
 public class PositionStandard extends PositionAttribute {
 
-    private float viscosity = 0.99f;
-    private float angularInertia = 0.6f;
-    private float magnitudeInertia = 0.9f;
-    private float sizeInertia = 1f;
+    public float viscosity = 0.99f;
+    public float angularInertia = 0.6f;
+    public float magnitudeInertia = 0.9f;
+    public float sizeInertia = 1f;
 
-    private float minSize = 5;
-    private float maxSize = 100;
+    public float minSize = 5;
+    public float maxSize = 100;
 
     public PositionStandard(PVector pos, PVector speed, float size) {
         super(pos, speed, size);
@@ -39,7 +39,7 @@ public class PositionStandard extends PositionAttribute {
      * Works with : GaussianDerivative 
      */
     @Override
-    protected void updateSpeed() {
+    public void updateSpeed() {
 
         PVector newSpeed = new PVector();
         
@@ -72,7 +72,7 @@ public class PositionStandard extends PositionAttribute {
      * @see MeanColor
      */
     @Override
-    protected void updateSize() {
+    public void updateSize() {
 
         if (currentAttribute instanceof MeanColor) {
             float lum = brightness((int) ((MeanColor) currentAttribute).getMeanColor()) / 255f;
@@ -81,14 +81,14 @@ public class PositionStandard extends PositionAttribute {
         }
     }
 
-    private float brightness(int c) {
+    public float brightness(int c) {
         int red = c >> 16 & 0xFF;
         int green = c >> 8 & 0xFF;
         int blue = c & 0xFF;
         return (red + green + blue) / 3f;
     }
 
-    private PVector slerp(PVector v1, PVector v2, float t) {
+    public PVector slerp(PVector v1, PVector v2, float t) {
         PVector v = new PVector(PApplet.lerp(v1.x, v2.x, t),
                 PApplet.lerp(v1.y, v2.y, t));
         v.normalize();

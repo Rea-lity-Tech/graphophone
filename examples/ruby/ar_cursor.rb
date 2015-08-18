@@ -1,5 +1,7 @@
+require_relative 'position_ar'
+require_relative 'white_majority'
 
-class BasicCursor
+class ARCursor
 
   attr_reader :active  
   @@lastCursorID = 0  
@@ -24,21 +26,24 @@ class BasicCursor
   
   def initPositionAttributes(pos, speed, size)
     @position_attributes = []
-    @position_std = Graphophone::PositionStandard.new(pos, speed, size)
+    @position_ar = PositionAR.new(pos, speed, size)
     
-    @position_attributes << @position_std
+    @position_attributes << @position_ar
   end
   
   def initImageAttributes
     @image_attributes = []
     @gauss = Graphophone::GaussianDerivative.new
+    @white_major = WhiteMajority.new
+    @red_major = Graphophone::RedMajority.new 
+
     @image_attributes << @gauss
+    @image_attributes << @white_major
+    @image_attributes << @red_major
   end
   
   def initSoundAttributes
     @sound_attributes = []
-#    @note_player = Graphophone::NotePlayer.new
-
     @note_player = NoteAttribute.new
 
     @sound_attributes << @note_player
@@ -65,13 +70,6 @@ class BasicCursor
 
   def ready? ; @image != nil && @bounds != nil ; end
   
-  def updatePositionFromImage
-    @position_attributes.each do |position|
-      @image_attributes.each do |image|
-        position.mapFrom image
-      end
-    end
-  end
   
   def checkForCollisions
     
@@ -103,7 +101,22 @@ class BasicCursor
     end
   end
 
-  def updateImageAttributes 
+
+  def updatePositionFromImage
+    
+    if @red_major.isRedMajority
+      @position_ar.mapFrom @white_major  ## no direction change
+      return
+    end
+    
+    @position_attributes.each do |position|
+      @image_attributes.each do |image|
+        position.mapFrom image
+      end
+    end
+  end
+  
+  def updateImageAttributes
     @position_attributes.each do |position|
       @image_attributes.each do |image|
         image.computeAt(position)
@@ -124,9 +137,9 @@ class BasicCursor
   MINUMUM_SPEED = 0.10
 
   def checkValidity
-    # @position_attributes.each do |position|
-    #   @active = position.getSpeed().mag() > MINUMUM_SPEED
-    # end
+    @position_attributes.each do |position|
+      @active = position.getSpeed().mag() > MINUMUM_SPEED
+    end
 
     is_timeout = $app.millis - @start_time > @life_time
     @active = false if is_timeout
@@ -139,18 +152,19 @@ class BasicCursor
     
     g.pushStyle
 
-    pos = @position_std.getPos
-    speed = @position_std.getSpeed
-    size = @position_std.getSize
+    pos = @position_ar.getPos
+    speed = @position_ar.getSpeed
+    size = @position_ar.getSize
 
     ## for projection
-    g.fill(255)
-    g.stroke 255
 
-    ## for screens
-    # g.fill(255, 100)
-    # g.stroke(0, 128)
+    g.fill 128, 0, 0
+    g.stroke 128
+    
+    g.fill 255  if @red_major.isRedMajority
 
+    
+    g.ellipseMode Processing::App::CENTER
     g.ellipse(pos.x, pos.y, size, size)
     g.line(pos.x,
            pos.y,

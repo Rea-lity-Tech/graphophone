@@ -21,8 +21,8 @@ public class Note extends Thread {
     private int channel;
     private final int NO_DURATION_OFF = -1;
 
-    static protected Synthesizer synthesizer = null;
-    static protected MidiChannel[] channels;
+    static public Synthesizer synthesizer = null;
+    static public MidiChannel[] channels;
     static protected boolean hasSynthStarted = false;
 
     static public void startSynth() throws MidiUnavailableException {

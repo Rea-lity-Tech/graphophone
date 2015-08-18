@@ -1,12 +1,12 @@
 
 
-(20...30).each do |x|
-  Graphophone::Note.channels[2].programChange(0, 0)
+Graphophone::Note.channels[2].programChange 0, 45
 
-  puts "x " + x.to_s
-  (25...29).each do |n|
-    Graphophone::Note.Play(n, 150, 120, 0, 2)
-    sleep 0.5
-  end
+#(20...30).each do |x|
 
+(50...55).each do |n|
+  Graphophone::Note.Play(n, 1500, 1000, 100, 2)
+  sleep 0.5
 end
+
+#end

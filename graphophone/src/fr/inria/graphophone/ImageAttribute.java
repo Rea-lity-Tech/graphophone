@@ -10,7 +10,7 @@ import processing.core.PVector;
 
 public abstract class ImageAttribute implements Attribute {
 
-    protected PImage currentImage;
+    public PImage currentImage;
 
     public void setImage(PImage image) {
         this.currentImage = image;
