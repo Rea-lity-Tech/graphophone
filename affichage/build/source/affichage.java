@@ -1,13 +1,32 @@
-import oscP5.*;
-import netP5.*;
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import oscP5.*; 
+import netP5.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class affichage extends PApplet {
+
+
+
 
 OscP5 oscP5;
 PImage background = null;
 
 PVector cursor = null;
 
-void setup() {
-  size(800, 600, P2D);
+public void setup() {
+  
 
   /* start oscP5, listening for incoming messages at port 12000 */
   oscP5 = new OscP5(this, 12000);
@@ -18,7 +37,7 @@ void setup() {
 }
 
 
-void draw() {
+public void draw() {
 //  background(0);
   fill(100);
   stroke(0, 100, 100);
@@ -32,7 +51,7 @@ void draw() {
 
 
 /* incoming osc message are forwarded to the oscEvent method. */
-void oscEvent(OscMessage theOscMessage) {
+public void oscEvent(OscMessage theOscMessage) {
   /* print the address pattern and the typetag of the received OscMessage */
 
   if (theOscMessage.checkAddrPattern("/image")==true) {
@@ -58,3 +77,13 @@ void oscEvent(OscMessage theOscMessage) {
   }
 }
 
+  public void settings() {  size(800, 600, P2D); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "affichage" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}

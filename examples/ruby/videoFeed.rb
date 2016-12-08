@@ -25,7 +25,7 @@ class MyApp < Processing::App
 
   def settings
     size(800, 600, P3D)
-  end 
+  end
 
   def setup
 
@@ -37,8 +37,8 @@ class MyApp < Processing::App
 #    @app1 = PaperApp.new
 #    @papart.startTracking
 
-    @camera = Papartlib::CameraFactory.createCamera(Papartlib::Camera::Type::OPENCV, "0");    
-        
+    @camera = Papartlib::CameraFactory.createCamera(Papartlib::Camera::Type::OPENCV, "0");
+
     @camera.setParent self
     @camera.setSize 800, 600
     @camera.start
@@ -53,41 +53,41 @@ class MyApp < Processing::App
   def draw
 
     @secondIm = createImage(width, height, RGB) if @secondIm == nil
-    
+
     img = @camera.getPImageCopyTo(@secondIm)
 
     return if img == nil
 
     @current_image = img
     image(@current_image, 0, 0, width, height)
-    
+
     @cursors.each do |cursor|
       cursor.setImage @current_image
       cursor.update millis
       cursor.drawSelf self.g
     end
-    
+
     @cursors.delete_if { |cursor|  not cursor.active }
-    
+
   end
-  
+
   def mouseReleased (*args)
     createCursor
   end
-  
+
   def createCursor
     return if  @current_image == nil
     cursor_size = 5 + random(15)
-    cursor = BasicCursor.new(Processing::PVector.new(mouse_x, mouse_y), 
-                             Processing::PVector.new(pmouse_x - mouse_x, pmouse_y - mouse_y), 
+    cursor = BasicCursor.new(Processing::PVector.new(mouse_x, mouse_y),
+                             Processing::PVector.new(pmouse_x - mouse_x, pmouse_y - mouse_y),
                              cursor_size)
 
     cursor.setImage  @current_image
-    @cursors << cursor 
+    @cursors << cursor
   end
 
 
-  
+
 end
 
 
